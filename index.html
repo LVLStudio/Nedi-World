@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nedi World - Início</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #0f0f0f; color: #f1f1f1; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* Header */
+    .header { 
+      background: #000; 
+      padding: 12px 0; 
+      border-bottom: 1px solid #222; 
+      position: sticky; 
+      top: 0; 
+      z-index: 100;
+      transition: all 0.3s ease;
+    }
+    .nav { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+
+    .logo { 
+      font-size: 22px; 
+      font-weight: bold; 
+      color: white; 
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .logo:hover {
+      transform: scale(1.05);
+      color: #4CAF50;
+    }
+
+    .nav-center { flex: 1; display: flex; justify-content: center; }
+    .search-bar { width: 100%; max-width: 400px; display: flex; position: relative; }
+    .search-bar input { 
+      width: 100%; padding: 8px 12px; border: none; border-radius: 6px 0 0 6px;
+      background: #1a1a1a; color: #fff; outline: none; transition: all 0.3s ease;
+    }
+    .search-bar input:focus {
+      background: #252525;
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+    }
+    .search-bar button {
+      padding: 8px 15px; border: none; border-radius: 0 6px 6px 0;
+      background: #333; color: #fff; cursor: pointer; transition: 0.2s;
+    }
+    .search-bar button:hover { background: #4CAF50; }
+
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .currency { 
+      display: flex; 
+      align-items: center; 
+      gap: 5px; 
+      font-weight: bold; 
+      color: gold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 5px 10px;
+      border-radius: 15px;
+      background: rgba(255, 215, 0, 0.1);
+    }
+    .currency:hover {
+      background: rgba(255, 215, 0, 0.2);
+      transform: scale(1.05);
+    }
+    .currency span { font-size: 1rem; }
+    .nav-links { display: flex; gap: 20px; list-style: none; }
+    .nav-links a { 
+      color: #f1f1f1; 
+      text-decoration: none; 
+      font-weight: 500; 
+      transition: all 0.3s ease;
+      padding: 8px 15px;
+      border-radius: 20px;
+    }
+    .nav-links a:hover { 
+      color: #4CAF50;
+      background: rgba(76, 175, 80, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Friends */
+    .friends-section { padding: 30px 0; }
+    .friends-title { 
+      font-size: 1.4rem; 
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .online-count {
+      background: #4CAF50;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+    }
+    .friends-list { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
+    .friend { 
+      text-align: center; 
+      flex: 0 0 auto;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .friend:hover {
+      background: rgba(76, 175, 80, 0.1);
+      transform: translateY(-5px);
+    }
+    .friend img { 
+      width: 60px; 
+      height: 60px; 
+      border-radius: 50%; 
+      border: 2px solid #333;
+      transition: all 0.3s ease;
+    }
+    .friend:hover img {
+      border-color: #4CAF50;
+      box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+    }
+    .friend span { 
+      display: block; 
+      margin-top: 5px; 
+      font-size: 0.8rem; 
+      color: #ccc;
+      transition: color 0.3s ease;
+    }
+    .friend:hover span { color: #4CAF50; }
+
+    /* Online Status */
+    .friend-status {
+      position: relative;
+    }
+    .friend-status::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      width: 12px;
+      height: 12px;
+      background: #4CAF50;
+      border-radius: 50%;
+      border: 2px solid #0f0f0f;
+    }
+
+    /* Games */
+    .games-section { padding: 30px 0; }
+    .section-title { 
+      font-size: 1.4rem; 
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+    .game-card { 
+      background: #1a1a1a; 
+      border-radius: 8px; 
+      border: 1px solid #222; 
+      overflow: hidden; 
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    .game-card:hover { 
+      background: #222;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      border-color: #4CAF50;
+    }
+    .game-image { 
+      width: 100%; 
+      height: 120px; 
+      background: linear-gradient(135deg, #111, #333);
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-size: 2rem; 
+      color: #888;
+      transition: all 0.3s ease;
+    }
+    .game-card:hover .game-image {
+      transform: scale(1.1);
+    }
+    .game-info { padding: 15px; }
+    .game-title { 
+      font-size: 1rem; 
+      color: #fff; 
+      margin-bottom: 8px;
+      transition: color 0.3s ease;
+    }
+    .game-card:hover .game-title { color: #4CAF50; }
+    .game-description { font-size: 0.85rem; color: #aaa; }
+
+    .game-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 0.75rem;
+      color: #666;
+    }
+    .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(76, 175, 80, 0.9);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+    .game-card:hover .play-btn {
+      opacity: 1;
+    }
+
+    /* Slogan */
+    .slogan { 
+      text-align: center; 
+      padding: 40px 20px; 
+      font-size: 1.6rem; 
+      font-weight: bold; 
+      color: #fff;
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 20px rgba(76, 175, 80, 0.3); }
+      to { text-shadow: 0 0 40px rgba(76, 175, 80, 0.6); }
+    }
+
+    /* Notifications */
+    .notification {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background: #4CAF50;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      z-index: 1000;
+      transform: translateX(100%);
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    }
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav { flex-wrap: wrap; }
+      .nav-center { order: 3; width: 100%; margin-top: 10px; }
+      .nav-links { display: none; }
+      .friends-list { justify-content: center; }
+      .games-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    }
+
+    /* Search Results */
+    .search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 0 0 6px 6px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+    }
+    .search-result {
+      padding: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .search-result:hover {
+      background: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <div class="logo" onclick="showNotification('🏠 Bem-vindo ao Nedi World!')">🌍 Nedi World</div>
+
+        <!-- Barra de Pesquisa -->
+        <div class="nav-center">
+          <form class="search-bar" onsubmit="handleSearch(event)">
+            <input type="text" placeholder="Pesquisar jogos ou amigos..." id="searchInput" oninput="handleSearchInput(this.value)">
+            <button type="submit">🔍</button>
+            <div class="search-results" id="searchResults"></div>
+          </form>
+        </div>
+
+        <!-- Links e Moeda -->
+        <div class="nav-right">
+          <ul class="nav-links">
+            <li><a href="#" onclick="showNotification('🏠 Você já está na página inicial!')">Início</a></li>
+            <li><a href="#" onclick="showNotification('🎮 Carregando biblioteca de jogos...')">Jogos</a></li>
+            <li><a href="#" onclick="showNotification('🛠️ Editor de jogos em breve!')">Criar</a></li>
+            <li><a href="#" onclick="showNotification('👥 Conectando com a comunidade...')">Comunidade</a></li>
+          </ul>
+          <div class="currency" onclick="showNotification('💰 Suas moedas: 120 Nedi Coins!')">
+            🪙 <span id="coinCount">120</span>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Friends Section -->
+  <section class="friends-section container">
+    <h2 class="friends-title">
+      👥 Conexões (Amigos) 
+      <span class="online-count" id="onlineCount">5 online</span>
+    </h2>
+    <div class="friends-list">
+      <div class="friend friend-status" onclick="showNotification('👋 Ana está online jogando Reino dos Blocos!')">
+        <img src="https://via.placeholder.com/60/4CAF50/white?text=A" alt="">
+        <span>Ana</span>
+      </div>
+      <div class="friend friend-status" onclick="showNotification('👋 João está online criando um jogo!')">
+        <img src="https://via.placeholder.com/60/2196F3/white?text=J" alt="">
+        <span>João</span>
+      </div>
+      <div class="friend" onclick="showNotification('😴 Pedro está offline')">
+        <img src="https://via.placeholder.com/60/666/white?text=P" alt="">
+        <span>Pedro</span>
+      </div>
+      <div class="friend friend-status" onclick="showNotification('👋 Lucas está online em Speed Racers!')">
+        <img src="https://via.placeholder.com/60/FF9800/white?text=L" alt="">
+        <span>Lucas</span>
+      </div>
+      <div class="friend friend-status" onclick="showNotification('👋 Maria está online explorando o espaço!')">
+        <img src="https://via.placeholder.com/60/E91E63/white?text=M" alt="">
+        <span>Maria</span>
+      </div>
+      <div class="friend friend-status" onclick="showNotification('👋 Carlos está online construindo!')">
+        <img src="https://via.placeholder.com/60/9C27B0/white?text=C" alt="">
+        <span>Carlos</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Games Section -->
+  <section class="games-section container">
+    <h2 class="section-title">🎮 Jogos Recomendados</h2>
+    <div class="games-grid">
+      <div class="game-card" onclick="playGame('Reino dos Blocos')">
+        <div class="game-image">🏰</div>
+        <button class="play-btn">▶ JOGAR</button>
+        <div class="game-info">
+          <h3 class="game-title">Reino dos Blocos</h3>
+          <p class="game-description">Construa castelos e explore aventuras.</p>
+          <div class="game-stats">
+            <span>👥 2.4k jogando</span>
+            <span>⭐ 4.8/5</span>
+          </div>
+        </div>
+      </div>
+      <div class="game-card" onclick="playGame('Speed Racers')">
+        <div class="game-image">🚗</div>
+        <button class="play-btn">▶ JOGAR</button>
+        <div class="game-info">
+          <h3 class="game-title">Speed Racers</h3>
+          <p class="game-description">Corra em pistas criadas pelos jogadores.</p>
+          <div class="game-stats">
+            <span>👥 1.8k jogando</span>
+            <span>⭐ 4.6/5</span>
+          </div>
+        </div>
+      </div>
+      <div class="game-card" onclick="playGame('Aventura Espacial')">
+        <div class="game-image">🌌</div>
+        <button class="play-btn">▶ JOGAR</button>
+        <div class="game-info">
+          <h3 class="game-title">Aventura Espacial</h3>
+          <p class="game-description">Explore o universo e construa estações.</p>
+          <div class="game-stats">
+            <span>👥 3.1k jogando</span>
+            <span>⭐ 4.9/5</span>
+          </div>
+        </div>
+      </div>
+      <div class="game-card" onclick="playGame('Cidade Virtual')">
+        <div class="game-image">🏙️</div>
+        <button class="play-btn">▶ JOGAR</button>
+        <div class="game-info">
+          <h3 class="game-title">Cidade Virtual</h3>
+          <p class="game-description">Construa e gerencie sua própria cidade.</p>
+          <div class="game-stats">
+            <span>👥 5.6k jogando</span>
+            <span>⭐ 4.8/5</span>
+          </div>
+        </div>
+      </div>
+      <div class="game-card" onclick="playGame('Arena PvP')">
+        <div class="game-image">⚔️</div>
+        <button class="play-btn">▶ JOGAR</button>
+        <div class="game-info">
+          <h3 class="game-title">Arena PvP</h3>
+          <p class="game-description">Batalhas épicas em tempo real.</p>
+          <div class="game-stats">
+            <span>👥 892 jogando</span>
+            <span>⭐ 4.5/5</span>
+          </div>
+        </div>
+      </div>
+      <div class="game-card" onclick="playGame('Escola de Magia')">
+        <div class="game-image">🧙‍♂️</div>
+        <button class="play-btn">▶ JOGAR</button>
+        <div class="game-info">
+          <h3 class="game-title">Escola de Magia</h3>
+          <p class="game-description">Aprenda feitiços e duelar com magos.</p>
+          <div class="game-stats">
+            <span>👥 1.2k jogando</span>
+            <span>⭐ 4.7/5</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slogan -->
+  <div class="slogan">✨ Crie Mundos Infinitos ✨</div>
+
+  <script>
+    // Notification System
+    function showNotification(message) {
+      // Remove existing notification
+      const existing = document.querySelector('.notification');
+      if (existing) existing.remove();
+
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+
+      setTimeout(() => notification.classList.add('show'), 100);
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+      }, 3000);
+    }
+
+    // Play Game Function
+    function playGame(gameName) {
+      showNotification(`🎮 Carregando ${gameName}...`);
+      
+      // Simulate earning coins
+      setTimeout(() => {
+        const coinElement = document.getElementById('coinCount');
+        let currentCoins = parseInt(coinElement.textContent);
+        coinElement.textContent = currentCoins + 5;
+        showNotification('🪙 +5 Nedi Coins por jogar!');
+      }, 2000);
+    }
+
+    // Search Functionality
+    const games = [
+      'Reino dos Blocos', 'Speed Racers', 'Aventura Espacial', 
+      'Cidade Virtual', 'Arena PvP', 'Escola de Magia'
+    ];
+    const friends = ['Ana', 'João', 'Pedro', 'Lucas', 'Maria', 'Carlos'];
+
+    function handleSearchInput(value) {
+      const results = document.getElementById('searchResults');
+      if (!value.trim()) {
+        results.style.display = 'none';
+        return;
+      }
+
+      const searchResults = [...games, ...friends].filter(item => 
+        item.toLowerCase().includes(value.toLowerCase())
+      );
+
+      if (searchResults.length > 0) {
+        results.innerHTML = searchResults
+          .map(item => `<div class="search-result" onclick="selectSearchResult('${item}')">${item}</div>`)
+          .join('');
+        results.style.display = 'block';
+      } else {
+        results.style.display = 'none';
+      }
+    }
+
+    function selectSearchResult(item) {
+      document.getElementById('searchInput').value = item;
+      document.getElementById('searchResults').style.display = 'none';
+      showNotification(`🔍 Você pesquisou por: ${item}`);
+    }
+
+    function handleSearch(event) {
+      event.preventDefault();
+      const searchTerm = document.getElementById('searchInput').value;
+      if (searchTerm.trim()) {
+        showNotification(`🔍 Pesquisando por: ${searchTerm}`);
+        document.getElementById('searchResults').style.display = 'none';
+      }
+    }
+
+    // Hide search results when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.search-bar')) {
+        document.getElementById('searchResults').style.display = 'none';
+      }
+    });
+
+    // Dynamic online counter
+    function updateOnlineCount() {
+      const count = Math.floor(Math.random() * 3) + 4; // 4-6 online
+      document.getElementById('onlineCount').textContent = `${count} online`;
+    }
+
+    // Update online count every 30 seconds
+    setInterval(updateOnlineCount, 30000);
+
+    // Welcome message
+    setTimeout(() => {
+      showNotification('🎉 Bem-vindo ao Nedi World! Explore e divirta-se!');
+    }, 1000);
+
+    // Simulate random friend activity
+    const friendActivities = [
+      'Ana começou a jogar Reino dos Blocos!',
+      'João criou um novo jogo!',
+      'Lucas venceu uma corrida!',
+      'Maria descobriu um planeta!',
+      'Carlos construiu um castelo épico!'
+    ];
+
+    function randomFriendActivity() {
+      const activity = friendActivities[Math.floor(Math.random() * friendActivities.length)];
+      showNotification(`👥 ${activity}`);
+    }
+
+    // Show random friend activity every 45 seconds
+    setInterval(randomFriendActivity, 45000);
+  </script>
+
+</body>
+</html>
